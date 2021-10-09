@@ -1,1 +1,8 @@
-console.log('Sending data to the server...✔');
+let logged;
+
+function sendAnalytics(data: string) {
+    console.log(data);
+    logged = true;
+}
+
+sendAnalytics('The data');
