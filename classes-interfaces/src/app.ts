@@ -1,17 +1,20 @@
 class Department {
-    public name: string;
+    // private id: string;
+    // private name: string;
     private employees: string[] = [];
 
-    constructor(n: string) {
-        this.name = n;
+    constructor(private id: number, private name: string) {
+        // this.id = id;
+        // this.name = n;
     }
 
-    //this: Department - явное указания для инстансов
     describe(this: Department) {
-        console.log('Department: ' + this.name);
+        console.log(`Department (${this.id}): ${this.name}`);
+        console.log(this.id)
     }
 
     addEmployee(employee: string) {
+        // validation etc
         this.employees.push(employee);
     }
 
@@ -21,6 +24,7 @@ class Department {
     }
 }
 
+
 //так как accountingCopy не является инстансом Department, то мы не сможем вызвать у него describe();
 //чтобы мы могли вызывать методы, нам нужно добавить поле name, так ts будет видеть что обьект похожь на Department
 /*
@@ -29,7 +33,7 @@ const accountingCopy = { name: 'DUMMY', describe: accounting.describe };
 accountingCopy.describe();
 */
 
-const accounting = new Department('Accounting');
+const accounting = new Department(new Date().getTime(), 'Accounting');
 
 accounting.addEmployee('Nik');
 accounting.addEmployee('Vik');
