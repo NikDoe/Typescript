@@ -1,10 +1,10 @@
-class Department {
+abstract class Department {
     static fiscalYear = 2020;
     // private id: string;
     // private name: string;
     protected employees: string[] = [];
 
-    constructor(private readonly id: number, private name: string) {
+    protected constructor(protected readonly id: number, protected name: string) {
         // this.id = id;
         // this.name = n;
         // console.log(this.fiscalYear); //Error, constructor isn't static method
@@ -15,11 +15,7 @@ class Department {
         return { name };
     }
 
-    describe(this: Department) {
-        // this.id = '1234'; //Error readonly property
-        console.log(`Department (${this.id}): ${this.name}`);
-        console.log(this.id)
-    }
+    abstract describe(this: Department): void;
 
     addEmployee(employee: string) {
         // validation etc
@@ -37,6 +33,10 @@ class ITDepartment extends Department {
         super(id, 'IT');
     }
 
+    describe() {
+        console.log('The IT describe method' + this.id)
+    }
+
 }
 
 class AccountingDepartment extends Department {
@@ -50,8 +50,13 @@ class AccountingDepartment extends Department {
         if(!value) throw new Error('Please pass in a valid value!');
         this.addReport(value);
     }
+
     constructor(private reports: string[], private lastReport: string) {
         super(new Date().getTime(), 'Accounting');
+    }
+
+    describe(this: AccountingDepartment){
+        console.log('The Accounting describe method' + this.name)
     }
 
     addEmployee(name: string) {
@@ -80,6 +85,7 @@ const accountingCopy = { name: 'DUMMY', describe: accounting.describe };
 accountingCopy.describe();
 */
 
+///static
 const employee1 = Department.createEmployee('NikDoe'); //call static method
 console.log(employee1, Department.fiscalYear); //call static property fiscalYear
 
@@ -105,3 +111,6 @@ accounting.printReports();
 accounting.addEmployee('Andrew');
 accounting.addEmployee('Nik');
 accounting.printEmployeeInformation();
+
+///abstract
+accounting.describe();
