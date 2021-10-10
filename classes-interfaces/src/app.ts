@@ -25,6 +25,26 @@ class Department {
     }
 }
 
+class ITDepartment extends Department {
+    constructor(id: number, public admins: string[]) {
+        super(id, 'IT');
+    }
+
+}
+
+class AccountingDepartment extends Department {
+    constructor(id: number, private reports: string[]) {
+        super(id, 'Accounting');
+    }
+
+    addReport(text: string) {
+        this.reports.push(text);
+    }
+
+    printReports() {
+        console.log(this.reports);
+    }
+}
 
 //так как accountingCopy не является инстансом Department, то мы не сможем вызвать у него describe();
 //чтобы мы могли вызывать методы, нам нужно добавить поле name, так ts будет видеть что обьект похожь на Department
@@ -34,13 +54,20 @@ const accountingCopy = { name: 'DUMMY', describe: accounting.describe };
 accountingCopy.describe();
 */
 
-const accounting = new Department(new Date().getTime(), 'Accounting');
+const it = new ITDepartment(new Date().getTime(), ['Nik']);
 
-accounting.addEmployee('Nik');
-accounting.addEmployee('Vik');
-accounting.addEmployee('Alen');
+it.addEmployee('Nik');
+it.addEmployee('Vik');
+it.addEmployee('Alen');
 
 
 // accounting.employees[2] = 'Alen'; // Error, private
-accounting.describe();
-accounting.printEmployeeInformation();
+it.describe();
+it.printEmployeeInformation();
+console.log(it)
+
+const accounting = new AccountingDepartment(new Date().getTime(), []);
+
+accounting.addReport('Something went wrong...');
+
+accounting.printReports();
