@@ -1,3 +1,12 @@
+// type addFn = (a: number, b: number) => number; // type as fn
+interface addFn { //interface as fn
+    (a: number, b: number): number;
+}
+
+const add: addFn = (n1:number, n2:number) => {
+    return n1 + n2;
+}
+
 interface Named {
     readonly name: string;
 }
