@@ -3,12 +3,13 @@ class Department {
     // private name: string;
     private employees: string[] = [];
 
-    constructor(private id: number, private name: string) {
+    constructor(private readonly id: number, private name: string) {
         // this.id = id;
         // this.name = n;
     }
 
     describe(this: Department) {
+        // this.id = '1234'; //Error readonly property
         console.log(`Department (${this.id}): ${this.name}`);
         console.log(this.id)
     }
