@@ -1,4 +1,5 @@
 class Department {
+    static fiscalYear = 2020;
     // private id: string;
     // private name: string;
     protected employees: string[] = [];
@@ -6,6 +7,12 @@ class Department {
     constructor(private readonly id: number, private name: string) {
         // this.id = id;
         // this.name = n;
+        // console.log(this.fiscalYear); //Error, constructor isn't static method
+    }
+
+    static createEmployee(name: string) {
+        console.log(this.fiscalYear); // only in static method
+        return { name };
     }
 
     describe(this: Department) {
@@ -72,6 +79,9 @@ const accountingCopy = { name: 'DUMMY', describe: accounting.describe };
 
 accountingCopy.describe();
 */
+
+const employee1 = Department.createEmployee('NikDoe'); //call static method
+console.log(employee1, Department.fiscalYear); //call static property fiscalYear
 
 const it = new ITDepartment(new Date().getTime(), ['Nik']);
 
