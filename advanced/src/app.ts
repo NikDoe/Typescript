@@ -1,3 +1,5 @@
+//INTERSECTION TYPES
+
 type Admin = {
     name: string;
     privileges: string[];
@@ -23,6 +25,7 @@ type Numeric = number | boolean;
 
 type Universal = Combinable & Numeric;
 
+//TYPE GUARD IN TYPE/INTERFACES
 function add(a: Combinable, b: Combinable) {
     if (typeof a === 'string' || typeof b === 'string') {
         return a.toString() + b.toString();
@@ -47,6 +50,7 @@ function printEmployeeInformation(employee: UnknownEmployee) {
 printEmployeeInformation(e1)
 printEmployeeInformation({name: 'Vik', startDate: new Date()})
 
+//TYPE GUARD IN CLASSES
 class Car {
     drive() {
         console.log('Driving...');
@@ -77,3 +81,31 @@ function useVehicle(vehicle: Vehicle) {
 
 useVehicle(v1);
 useVehicle(v2);
+
+//DISCRIMINATED UNIONS
+
+interface Bird {
+    type: 'bird';
+    flyingSpeed: number;
+}
+
+interface Horse {
+    type: 'horse';
+    runningSpeed: number;
+}
+
+type Animal = Bird | Horse;
+
+function moveAnimal(animal: Animal) {
+    let speed;
+    switch (animal.type) {
+        case 'bird':
+            speed = animal.flyingSpeed;
+            break;
+        case 'horse':
+            speed = animal.runningSpeed;
+    }
+    console.log('Moving at speed: ' + speed);
+}
+
+moveAnimal({type: 'bird', flyingSpeed: 10});
