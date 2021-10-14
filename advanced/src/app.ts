@@ -147,3 +147,12 @@ function addFN(a: Combinable, b: Combinable) {
 
 const result = addFN('Nik', ' Doe');
 result.split(' ');
+
+//OPTIONAL CHAINING
+const fetchedUserData = {
+    id: 'u1',
+    name: 'Nik',
+    job: { title: 'CEO', description: 'My own company' }
+};
+
+console.log(fetchedUserData?.job?.title);
