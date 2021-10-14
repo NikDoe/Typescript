@@ -11,3 +11,13 @@ promise.then(data => {
   // data.split(' ');
     console.log(data);
 })
+
+
+//CREATE A GENERIC FUNC
+const merge = <T, U> (objA: T, objB?: U) => {
+    return Object.assign(objA, objB);
+}
+
+const mergeObj = merge({name: 'Nik'}, {age: 28})
+const newMergeObj = merge({isLogged: true})
+console.log(mergeObj.name, newMergeObj.isLogged)
