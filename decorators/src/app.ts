@@ -1,9 +1,11 @@
-function Logger(c: Function) {
-    console.log('Logging...');
-    console.log(c);
+function Logger(logString: string) {
+    return function(constructor: Function) {
+        console.log(logString);
+        console.log(constructor);
+    };
 }
 
-@Logger
+@Logger('LOGGING - PERSON')
 class Person {
     name = 'NikDoe';
 
