@@ -156,3 +156,8 @@ const fetchedUserData = {
 };
 
 console.log(fetchedUserData?.job?.title);
+
+//NULLISH COALESCING
+const userInput = undefined;
+const storedData = userInput ?? 'DEFAULT';
+console.log(storedData);
