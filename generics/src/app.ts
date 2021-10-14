@@ -2,19 +2,19 @@ const names: Array<string> = []; // string[]
 // names[0].split(' ');
 
 const promise: Promise<number> = new Promise((resolve) => {
-  setTimeout(() => {
-    resolve(10);
-  }, 2000);
+    setTimeout(() => {
+        resolve(10);
+    }, 2000);
 });
 
 promise.then(data => {
-  // data.split(' ');
+    // data.split(' ');
     console.log(data);
 })
 
 
 //CREATE A GENERIC FUNC
-const merge = <T, U> (objA: T, objB?: U) => {
+const merge = <T, U>(objA: T, objB?: U) => {
     return Object.assign(objA, objB);
 }
 
@@ -28,7 +28,7 @@ function newMerge<T extends object, U extends object>(objA: T, objB: U) {
     return Object.assign(objA, objB);
 }
 
-const mergedObj = newMerge({ name: "Max", hobbies: ["Sports"] }, { age: 30 });
+const mergedObj = newMerge({name: "Max", hobbies: ["Sports"]}, {age: 30});
 console.log(mergedObj);
 
 //ANOTHER GENERIC FUNC
@@ -47,3 +47,13 @@ function countAndDescribe<T extends Lengthy>(element: T): [T, string] {
 }
 
 console.log(countAndDescribe(['Sports', 'Cooking']));
+
+//THE 'KEYOF' CONSTRAINTS
+function extractAndConvert<T extends object, U extends keyof T>(
+    obj: T,
+    key: U
+) {
+    return 'Value: ' + obj[key];
+}
+
+extractAndConvert({name: 'Max'}, 'name');
