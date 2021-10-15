@@ -24,6 +24,9 @@ function WithTemplate(template: string, hookId: string) {
     };
 }
 
+//декорраторы закрепленные за классами/аксессорами/методами могут возвращать что либо
+//декорраторы закрепленные за свойствами/параметрами, тоже могут возвращать, но ts проигнорирует этот return
+
 @Logger('LOGGING - PERSON')
 @WithTemplate('<h1>My Person Object</h1>', 'app')
 class Person {
@@ -90,4 +93,33 @@ class Product {
 }
 
 const p1 = new Product('Book', 19);
-const p2 = new Product('Book 2', 29)
+const p2 = new Product('Book 2', 29);
+
+
+//AUTOBIND DECORATOR
+function AutoBind(_: any, _2: string, descriptor: PropertyDescriptor) {
+    const originalMethod = descriptor.value;
+    const adjDescriptor: PropertyDescriptor = {
+        configurable: true,
+        enumerable: false,
+        get() {
+            return originalMethod.bind(this);
+        }
+    };
+    return adjDescriptor;
+}
+
+class Printer {
+    message = 'This works!';
+
+    @AutoBind
+    showMessage() {
+        console.log(this.message);
+    }
+}
+
+const p = new Printer();
+p.showMessage();
+
+const button = document.querySelector('button')!;
+button.addEventListener('click', p.showMessage);
