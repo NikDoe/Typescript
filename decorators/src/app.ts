@@ -1,13 +1,13 @@
 function Logger(logString: string) {
     console.log('LOGGER FACTORY')
-    return function(_: Function) {
+    return function (_: Function) {
         console.log(logString);
     };
 }
 
 function WithTemplate(template: string, hookId: string) {
     console.log('TEMPLATE FACTORY');
-    return function<T extends { new (...args: any[]): {name: string} }>(
+    return function <T extends { new(...args: any[]): { name: string } }>(
         originalConstructor: T
     ) {
         return class extends originalConstructor {
@@ -41,7 +41,7 @@ const newPerson = new Person();
 // console.log(newPerson)
 
 //DIFFERENT DECORATORS
-function Log (target: any, propName: string | symbol) {
+function Log(target: any, propName: string | symbol) {
     console.log('PROPERTY DECORATOR!')
     console.log(target, propName);
 }
@@ -125,16 +125,47 @@ const button = document.querySelector('button')!;
 button.addEventListener('click', p.showMessage);
 
 //VALIDATION DECORATOR
-function Required() {
-
+interface ValidatorConfig {
+    [property: string]: {
+        [validatableProp: string]: string[]; // ['required', 'positive']
+    };
 }
 
-function PositiveNumber() {
+const registeredValidators: ValidatorConfig = {};
 
+function Required(target: any, propName: string) {
+    registeredValidators[target.constructor.name] = {
+        ...registeredValidators[target.constructor.name],
+        [propName]: ['required']
+    };
 }
 
-function validate(obj: object) {
+function PositiveNumber(target: any, propName: string) {
+    registeredValidators[target.constructor.name] = {
+        ...registeredValidators[target.constructor.name],
+        [propName]: ['positive']
+    };
+}
 
+function validate(obj: any) {
+    const objValidatorConfig = registeredValidators[obj.constructor.name];
+    if (!objValidatorConfig) {
+        return true;
+    }
+    let isValid = true;
+    for (const prop in objValidatorConfig) {
+        for (const validator of objValidatorConfig[prop]) {
+            switch (validator) {
+                case 'required':
+                    isValid = isValid && !!obj[prop];
+                    break;
+                case 'positive':
+                    isValid = isValid && obj[prop] > 0;
+                    break;
+            }
+        }
+    }
+    return isValid;
 }
 
 class Course {
@@ -165,4 +196,6 @@ courseForm.addEventListener('submit', event => {
         return;
     }
     console.log(createdCourse);
+    titleEl.value = '';
+    priceEl.value = '';
 });
