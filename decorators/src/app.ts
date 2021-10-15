@@ -32,8 +32,29 @@ const newPerson = new Person();
 
 //DIFFERENT DECORATORS
 function Log (target: any, propName: string | symbol) {
-    console.log('Property Decorator!')
+    console.log('PROPERTY DECORATOR!')
     console.log(target, propName);
+}
+
+function LogParameter(target: any, name: string | symbol, position: number) {
+    console.log('PARAMETER DECORATOR!')
+    console.log(target);
+    console.log(name);
+    console.log(position);
+}
+
+function LogAccessor(target: any, name: string | symbol, descriptor: PropertyDescriptor) {
+    console.log('ACCESSOR DECORATOR!')
+    console.log(target);
+    console.log(name);
+    console.log(descriptor);
+}
+
+function LogMethod(target: any, name: string | symbol, descriptor: PropertyDescriptor) {
+    console.log('METHOD DECORATOR!')
+    console.log(target);
+    console.log(name);
+    console.log(descriptor);
 }
 
 class Product {
@@ -41,6 +62,7 @@ class Product {
     public title: string
     private _price: number
 
+    @LogAccessor
     set price(val: number) {
         if (val > 0) {
             this._price = val;
@@ -54,7 +76,8 @@ class Product {
         this._price = p;
     }
 
-    getPriceWithTax(tax: number) {
+    @LogMethod
+    getPriceWithTax(@LogParameter tax: number) {
         return this._price * (1 + tax);
     }
 }
