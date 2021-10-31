@@ -6,7 +6,7 @@ function AutoBind(_: any, _2: string, descriptor: PropertyDescriptor) {
         enumerable: false,
         get() {
             return originalMethod.bind(this);
-        }
+        },
     };
     return adjDescriptor;
 }
@@ -22,39 +22,60 @@ class ProjectInput {
 
     constructor() {
         this.templateElement = document.getElementById(
-            'project-input'
+            "project-input"
         )! as HTMLTemplateElement;
-        this.hostElement = document.getElementById('app')! as HTMLDivElement;
+        this.hostElement = document.getElementById("app")! as HTMLDivElement;
 
         const importedNode = document.importNode(
             this.templateElement.content,
             true
         );
         this.element = importedNode.firstElementChild as HTMLFormElement;
-        this.element.id = 'user-input';
+        this.element.id = "user-input";
 
-        this.titleInputElement = this.element.querySelector('#title') as HTMLInputElement;
-        this.descriptionInputElement = this.element.querySelector('#description') as HTMLInputElement;
-        this.peopleInputElement = this.element.querySelector('#people') as HTMLInputElement;
+        this.titleInputElement = this.element.querySelector(
+            "#title"
+        ) as HTMLInputElement;
+        this.descriptionInputElement = this.element.querySelector(
+            "#description"
+        ) as HTMLInputElement;
+        this.peopleInputElement = this.element.querySelector(
+            "#people"
+        ) as HTMLInputElement;
 
         this.configure();
         this.attach();
     }
 
+    private gatherUserInput(): [string, string, number] | void {
+        const enteredTitle = this.titleInputElement.value;
+        const enteredDescription = this.descriptionInputElement.value;
+        const enteredNumber = this.peopleInputElement.value;
+
+        if (enteredTitle.trim().length === 0 || enteredDescription.trim().length === 0 || enteredNumber.trim().length === 0) {
+            alert('invalid input value')
+            return;
+        } else {
+            return [enteredTitle, enteredDescription, +enteredNumber];
+        }
+    }
+
     @AutoBind
     private submitHandler(event: Event) {
         event.preventDefault();
-        console.log(this.titleInputElement.value);
-        console.log(this.descriptionInputElement.value);
-        console.log(this.peopleInputElement.value);
+        const userInput = this.gatherUserInput();
+        if (Array.isArray(userInput)) {
+            const [title, desc, number] = userInput;
+            console.log(title, desc, number)
+        }
     }
 
     private configure() {
-        this.element.addEventListener('submit', this.submitHandler);
+        this.element.addEventListener("submit", this.submitHandler);
     }
 
     private attach() {
-        this.hostElement.insertAdjacentElement('afterbegin', this.element);
+        this.hostElement.insertAdjacentElement("afterbegin", this.element);
     }
 }
 
