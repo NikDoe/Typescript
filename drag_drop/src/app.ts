@@ -145,7 +145,6 @@ abstract class Component<T extends HTMLElement, U extends HTMLElement> {
     }
 
     abstract configure(): void;
-
     abstract renderContent(): void;
 }
 
@@ -194,26 +193,13 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement>{
 }
 
 //PROJECT CLASS
-class ProjectInput {
-    templateElement: HTMLTemplateElement;
-    hostElement: HTMLDivElement;
-    element: HTMLFormElement;
+class ProjectInput extends Component<HTMLDivElement, HTMLFormElement>{
     titleInputElement: HTMLInputElement;
     descriptionInputElement: HTMLInputElement;
     peopleInputElement: HTMLInputElement;
 
     constructor() {
-        this.templateElement = document.getElementById(
-            "project-input"
-        )! as HTMLTemplateElement;
-        this.hostElement = document.getElementById("app")! as HTMLDivElement;
-
-        const importedNode = document.importNode(
-            this.templateElement.content,
-            true
-        );
-        this.element = importedNode.firstElementChild as HTMLFormElement;
-        this.element.id = "user-input";
+        super("project-input", "app", true, "user-input")
 
         this.titleInputElement = this.element.querySelector(
             "#title"
@@ -226,8 +212,13 @@ class ProjectInput {
         ) as HTMLInputElement;
 
         this.configure();
-        this.attach();
     }
+
+    configure() {
+        this.element.addEventListener("submit", this.submitHandler);
+    }
+
+    renderContent() {}
 
     private gatherUserInput(): [string, string, number] | void {
         const enteredTitle = this.titleInputElement.value;
@@ -277,14 +268,6 @@ class ProjectInput {
             projectState.addNewProject(title, desc, number);
             this.clearInputs();
         }
-    }
-
-    private configure() {
-        this.element.addEventListener("submit", this.submitHandler);
-    }
-
-    private attach() {
-        this.hostElement.insertAdjacentElement("afterbegin", this.element);
     }
 }
 
