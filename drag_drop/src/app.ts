@@ -59,9 +59,21 @@ class ProjectState extends State<Project>{
             ProjectStatus.Active
         );
         this.projects.push(newProject);
-        this.listeners.forEach(
-            listenerFn => listenerFn(this.projects.slice())
-        )
+        this.updateListeners();
+    }
+
+    moveProject(projectId: string, newStatus: ProjectStatus) {
+        const project = this.projects.find(prj => prj.id === projectId);
+        if (project && project.status !== newStatus) {
+            project.status = newStatus;
+            this.updateListeners();
+        }
+    }
+
+    private updateListeners() {
+        for (const listenerFn of this.listeners) {
+            listenerFn(this.projects.slice());
+        }
     }
 }
 
@@ -130,7 +142,7 @@ abstract class Component<T extends HTMLElement, U extends HTMLElement> {
     hostElement: T;
     element: U;
 
-    constructor(
+    protected constructor(
         templateId: string,
         hostElementId: string,
         insertAtStart: boolean,
@@ -225,8 +237,13 @@ class ProjectList extends Component<HTMLDivElement, HTMLElement> implements Drag
         }
     }
 
+    @AutoBind
     dropHandler(event: DragEvent): void {
-        console.log(event.dataTransfer!.getData('text/plain'));
+        const prjId = event.dataTransfer!.getData('text/plain');
+        projectState.moveProject(
+            prjId,
+            this.type === 'active' ? ProjectStatus.Active : ProjectStatus.Finished
+        );
     }
 
     @AutoBind
