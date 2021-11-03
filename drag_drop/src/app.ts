@@ -1,23 +1,7 @@
 /// <reference path="drag-drop-interfaces.ts" />
+/// <reference path="project-model.ts" />
 
 namespace App {
-    //PROJECT TYPE
-    enum ProjectStatus {
-        Active,
-        Finished
-    }
-
-    class Project {
-        constructor(
-            public id: string,
-            public title: string,
-            public description: string,
-            public people: number,
-            public status: ProjectStatus
-        ) {
-        }
-    }
-
 //PROJECT STATE MANAGEMENT
     type Listener<T> = (items: T[]) => void;
 
