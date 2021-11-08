@@ -1,6 +1,4 @@
-import _ from 'lodash';
+import { Product } from './product.model';
 
-console.log(_.shuffle([1, 2, 3]));
-
-declare var GLOBAL: number;
-console.log(GLOBAL);
+const p1 = new Product('Book', 12.99);
+console.log(p1);
