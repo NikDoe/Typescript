@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack serve",
     "watch": "webpack --watch",
-    "build": "NODE_ENV=production webpack"
+    "build": "cross-env NODE_ENV=production webpack"
   },
   "keywords": [
     "typescript"
@@ -14,10 +14,12 @@
   "author": "Nik Doe",
   "license": "ISC",
   "devDependencies": {
-    "@types/lodash": "^4.14.176"
+    "@types/lodash": "^4.14.176",
+    "cross-env": "^7.0.3"
   },
   "dependencies": {
     "class-transformer": "^0.4.0",
+    "class-validator": "^0.13.1",
     "lodash": "^4.17.21",
     "reflect-metadata": "^0.1.13",
     "ts-loader": "^9.2.6",
